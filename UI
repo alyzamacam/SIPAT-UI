@@ -1,0 +1,740 @@
+Copy this into a file named `sipat-ui-design-board.html`:
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SIPAT UI Design Board</title>
+
+  <style>
+    :root {
+      --blue: #07569f;
+      --navy: #07345f;
+      --ink: #172536;
+      --muted: #62768a;
+      --line: #dce6ee;
+      --bg: #f4f8fb;
+      --green: #167a59;
+      --gp: #eaf7f0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #edf3f8;
+      color: var(--ink);
+      padding: 46px;
+      min-width: 1100px;
+    }
+
+    .heading {
+      max-width: 1210px;
+      margin: 0 auto 30px;
+    }
+
+    .heading h1 {
+      font-size: 27px;
+      color: var(--navy);
+      margin: 0;
+    }
+
+    .heading p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 6px 0 0;
+    }
+
+    .board {
+      max-width: 1210px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .frame {
+      background: #112b43;
+      border: 6px solid #112b43;
+      border-radius: 31px;
+      overflow: hidden;
+      box-shadow: 0 16px 38px #183b5c30;
+    }
+
+    .cap {
+      background: #fff;
+      padding: 13px 15px 10px;
+      font-size: 10px;
+      font-weight: 800;
+      color: #52697e;
+      letter-spacing: .55px;
+    }
+
+    .screen {
+      height: 600px;
+      overflow: hidden;
+      background: var(--bg);
+      padding: 15px;
+    }
+
+    .top,
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .top { margin-bottom: 14px; }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo {
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--blue);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .logo:before,
+    .logo:after {
+      content: "";
+      position: absolute;
+      background: var(--blue);
+    }
+
+    .logo:before {
+      width: 2px;
+      height: 13px;
+      left: 11px;
+      top: 5px;
+    }
+
+    .logo:after {
+      width: 13px;
+      height: 2px;
+      top: 11px;
+      left: 5px;
+    }
+
+    .logo i {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      right: -5px;
+      bottom: -2px;
+      background: var(--green);
+      border: 1px solid white;
+      border-radius: 50%;
+    }
+
+    .brand h2 {
+      font-size: 14px;
+      margin: 0;
+      color: var(--navy);
+      letter-spacing: .6px;
+    }
+
+    .brand p,
+    .label {
+      font-size: 7px;
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-weight: 750;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+
+    .tag,
+    .badge {
+      font-size: 7px;
+      color: var(--green);
+      background: var(--gp);
+      font-weight: 850;
+      padding: 5px 6px;
+      border-radius: 5px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e6edf2;
+      border-radius: 11px;
+      padding: 11px;
+      box-shadow: 0 2px 7px #193c5809;
+    }
+
+    .connection {
+      background: linear-gradient(125deg, var(--navy), var(--blue));
+      color: #fff;
+      border: 0;
+    }
+
+    .connection h3 {
+      font-size: 11px;
+      margin: 0 0 3px;
+    }
+
+    .connection p {
+      font-size: 8px;
+      color: #dceeff;
+      margin: 0;
+    }
+
+    .pill {
+      font-size: 7px;
+      border: 1px solid #ffffff42;
+      border-radius: 5px;
+      padding: 5px;
+    }
+
+    .dot {
+      width: 5px;
+      height: 5px;
+      display: inline-block;
+      border-radius: 50%;
+      background: #61d39d;
+      margin-right: 3px;
+    }
+
+    .flow {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      margin: 11px 0;
+    }
+
+    .flow span {
+      font-size: 7px;
+      background: #eef6fd;
+      color: var(--blue);
+      font-weight: 800;
+      padding: 5px;
+      border-radius: 4px;
+    }
+
+    .flow i {
+      font-size: 8px;
+      font-style: normal;
+      color: #8ba0b2;
+    }
+
+    .action {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 9px;
+      padding: 10px;
+      margin-bottom: 7px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 9px;
+    }
+
+    .action b {
+      display: block;
+      font-size: 10px;
+    }
+
+    .action small {
+      display: block;
+      color: var(--muted);
+      font-size: 8px;
+      margin-top: 2px;
+    }
+
+    .symbol {
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--blue);
+    }
+
+    .primary {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: white;
+    }
+
+    .primary .symbol { color: #fff; }
+
+    .camera {
+      height: 220px;
+      border-radius: 11px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 67% 35%, #d4dfbd 0 6%, transparent 6.5%),
+        radial-gradient(ellipse at 34% 64%, #aab98d 0 4%, transparent 4.5%),
+        linear-gradient(135deg, #51654a, #b5c99c 55%, #73886a);
+      box-shadow: inset 0 0 40px #25372188;
+    }
+
+    .box {
+      position: absolute;
+      border: 2px solid #50cf9b;
+      color: #fff;
+      font-size: 7px;
+    }
+
+    .box label {
+      position: absolute;
+      top: -16px;
+      left: -2px;
+      background: var(--green);
+      padding: 2px 3px;
+      white-space: nowrap;
+    }
+
+    .one {
+      left: 35px;
+      top: 48px;
+      width: 65px;
+      height: 89px;
+      transform: rotate(-22deg);
+    }
+
+    .two {
+      right: 35px;
+      top: 45px;
+      width: 57px;
+      height: 92px;
+      transform: rotate(25deg);
+    }
+
+    .three {
+      left: 130px;
+      bottom: 27px;
+      width: 53px;
+      height: 57px;
+    }
+
+    .scanline {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 48%;
+      height: 2px;
+      background: #e4fff5;
+      box-shadow: 0 0 10px #e4fff5;
+    }
+
+    .big {
+      font-size: 34px;
+      color: var(--navy);
+      font-weight: 850;
+    }
+
+    .scanrow {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin: 12px 0;
+    }
+
+    .scanrow small {
+      display: block;
+      font-size: 7px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .tools {
+      display: flex;
+      justify-content: space-around;
+      margin: 11px 0;
+    }
+
+    .tools span {
+      font-size: 8px;
+      color: var(--muted);
+    }
+
+    .tools b {
+      display: block;
+      text-align: center;
+      color: var(--blue);
+      font-size: 12px;
+    }
+
+    .capture {
+      margin: auto;
+      width: 58px;
+      height: 58px;
+      border: 4px solid #c9e0f4;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 8px;
+      font-weight: 850;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 11px;
+    }
+
+    .hero .big { font-size: 43px; }
+
+    .hero p {
+      font-size: 8px;
+      color: var(--blue);
+      font-weight: 850;
+      letter-spacing: .7px;
+      margin: 2px;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8px;
+      margin-top: 9px;
+    }
+
+    .table th {
+      text-align: left;
+      color: #718396;
+      font-size: 7px;
+      padding: 4px 0;
+    }
+
+    .table td {
+      padding: 6px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin: 9px 0;
+    }
+
+    .metric {
+      background: #eef6fd;
+      border-radius: 7px;
+      padding: 8px;
+    }
+
+    .metric span {
+      font-size: 6px;
+      color: #63809a;
+      font-weight: 800;
+      display: block;
+    }
+
+    .metric b {
+      font-size: 12px;
+      color: var(--navy);
+    }
+
+    .ai {
+      border-color: #cfe8db;
+      background: #fbfefc;
+    }
+
+    .ai h3 {
+      font-size: 15px;
+      margin: 4px 0 2px;
+      color: var(--navy);
+    }
+
+    .ai p {
+      font-size: 8px;
+      color: #47705e;
+      margin: 0;
+    }
+
+    .button {
+      font-size: 8px;
+      letter-spacing: .25px;
+      font-weight: 850;
+      text-align: center;
+      border-radius: 7px;
+      padding: 9px;
+      margin-top: 8px;
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .download { background: var(--green); }
+
+    .details {
+      list-style: none;
+      margin: 7px 0 0;
+      padding: 0;
+    }
+
+    .details li {
+      font-size: 8px;
+      line-height: 1.35;
+      padding: 6px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .note {
+      font-size: 8px;
+      line-height: 1.35;
+      color: #705526;
+      background: #fff6e7;
+      padding: 7px;
+      border-radius: 6px;
+      margin-top: 8px;
+    }
+
+    .progress {
+      height: 6px;
+      background: #deebe4;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress i {
+      display: block;
+      background: var(--green);
+      height: 100%;
+      width: 94%;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="heading">
+    <h1>SIPAT — Mobile Application UI Design</h1>
+    <p>Scientific field-research workflow: capture, detect, count, identify, analyze, and document.</p>
+  </header>
+
+  <main class="board">
+    <article class="frame">
+      <div class="cap">01 · DASHBOARD</div>
+
+      <section class="screen">
+        <div class="top">
+          <div class="brand">
+            <div class="logo"><i></i></div>
+            <div>
+              <h2>SIPAT</h2>
+              <p>Portable analysis tool</p>
+            </div>
+          </div>
+          <span class="tag">SYSTEM READY</span>
+        </div>
+
+        <div class="card connection">
+          <div class="row">
+            <div>
+              <h3>Makeroscope connection</h3>
+              <p>Device paired · Camera available</p>
+            </div>
+            <span class="pill"><i class="dot"></i>CONNECTED</span>
+          </div>
+        </div>
+
+        <div class="flow">
+          <span>CAPTURE</span><i>→</i>
+          <span>DETECT</span><i>→</i>
+          <span>ANALYZE</span>
+        </div>
+
+        <p class="label">RESEARCH WORKFLOW</p>
+
+        <div class="action primary">
+          <span class="symbol">+</span>
+          <span>
+            <b>START SCAN</b>
+            <small>Register a sample and open live camera</small>
+          </span>
+        </div>
+
+        <div class="action">
+          <span class="symbol">≡</span>
+          <span>
+            <b>RESULTS HISTORY</b>
+            <small>Open saved analyses and reports</small>
+          </span>
+        </div>
+
+        <div class="action">
+          <span class="symbol">i</span>
+          <span>
+            <b>ABOUT SIPAT</b>
+            <small>Research project and model information</small>
+          </span>
+        </div>
+
+        <div class="card" style="margin-top:13px">
+          <p class="label">LATEST ANALYSIS</p>
+          <div class="line"><span>Sample ID</span><b>SIPAT-2026-001</b></div>
+          <div class="line"><span>Larvae detected</span><b>12</b></div>
+        </div>
+      </section>
+    </article>
+
+    <article class="frame">
+      <div class="cap">02 · LIVE SCAN</div>
+
+      <section class="screen">
+        <div class="top">
+          <div class="brand">
+            <div class="logo"><i></i></div>
+            <div>
+              <h2>SIPAT</h2>
+              <p>Live makeroscope feed</p>
+            </div>
+          </div>
+          <span class="tag">CAMERA LIVE</span>
+        </div>
+
+        <div class="card connection" style="padding:10px;margin-bottom:10px">
+          <div class="row">
+            <div>
+              <h3>YOLO detection</h3>
+              <p>Model monitoring image</p>
+            </div>
+            <span class="pill"><i class="dot"></i>LIVE</span>
+          </div>
+        </div>
+
+        <div class="camera">
+          <div class="box one"><label>Larva 01 · 96%</label></div>
+          <div class="box two"><label>Larva 02 · 93%</label></div>
+          <div class="box three"><label>Larva 03 · 89%</label></div>
+          <div class="scanline"></div>
+        </div>
+
+        <div class="scanrow">
+          <div>
+            <small>OBJECTS DETECTED</small>
+            <strong class="big">3</strong>
+          </div>
+          <span class="badge">ANALYSIS ACTIVE</span>
+        </div>
+
+        <div class="tools">
+          <span><b>+</b>Zoom</span>
+          <span><b>◐</b>Lighting</span>
+          <span><b>↻</b>Camera</span>
+          <span><b>≡</b>Settings</span>
+        </div>
+
+        <div class="capture">CAPTURE</div>
+      </section>
+    </article>
+
+    <article class="frame">
+      <div class="cap">03 · DETECTION RESULTS</div>
+
+      <section class="screen">
+        <div class="top">
+          <div class="brand">
+            <div class="logo"><i></i></div>
+            <div>
+              <h2>SIPAT</h2>
+              <p>Detection results</p>
+            </div>
+          </div>
+          <span class="tag">COMPLETE</span>
+        </div>
+
+        <div class="card hero">
+          <strong class="big">7</strong>
+          <p>TOTAL LARVAE DETECTED</p>
+        </div>
+
+        <div class="camera" style="height:132px;margin-top:9px">
+          <div class="box one"><label>01 · 96%</label></div>
+          <div class="box two"><label>02 · 93%</label></div>
+          <div class="box three"><label>03 · 89%</label></div>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Detection</th>
+              <th>Confidence</th>
+              <th>Class</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Larva 01</td><td>96%</td><td>Aedes</td></tr>
+            <tr><td>Larva 02</td><td>93%</td><td>Aedes</td></tr>
+            <tr><td>Larva 03</td><td>89%</td><td>Culex</td></tr>
+          </tbody>
+        </table>
+
+        <div class="metrics">
+          <div class="metric">
+            <span>AVERAGE CONFIDENCE</span>
+            <b>92.3%</b>
+          </div>
+          <div class="metric">
+            <span>ANALYSIS TIME</span>
+            <b>1.8 sec</b>
+          </div>
+        </div>
+
+        <div class="card ai">
+          <p class="label" style="color:var(--green)">AI INFORMATION</p>
+          <h3>Aedes spp.</h3>
+          <p>Model-supported classification · 94% confidence</p>
+        </div>
+
+        <div class="button download">DOWNLOAD RESULTS (PDF)</div>
+        <div class="button">SAVE RESULTS DATA (CSV)</div>
+      </section>
+    </article>
+
+    <article class="frame">
+      <div class="cap">04 · AI INFORMATION & REPORT</div>
+
+      <section class="screen">
+        <div class="top">
+          <div class="brand">
+            <div class="logo"><i></i></div>
+            <div>
+              <h2>SIPAT</h2>
+              <p>AI information</p>
+            </div>
+          </div>
+          <span class="tag">MODEL OUTPUT</span>
+        </div>
+
+        <div class="card ai">
+          <p class="label" style="color:var(--green)">MODEL-SUPPORTED IDENTIFICATION</p>
+          <h3>Aedes spp.</h3>
+          <p>Dominant trained-model class</p>
+          <div class="progress"><i></i></div>
+          <p style="margin-top:6px;font-weight:850">94% confidence</p>
+        </div>
+
+        <div class="card" style="margin-top:9px">
+          <p class="label">DETECTION EXPLANATION</p>
+          <ul class="details">
+            <li><b>Count:</b> 7 larval objects localized in image.</li>
+            <li><b>Classification:</b> Highest-confidence detections align with Aedes class.</li>
+            <li><b>Characteristics:</b> Body shape, segmentation, siphon characteristics, and larval posture.</li>
+            <li><b>Research note:</b> Output is limited to trained model classes.</li>
+          </ul>
+        </div>
+
+        <div class="note">
+          Manual review is advised when confidence is low or image morphology is unclear.
+        </div>
+
+        <div class="button">OPEN MANUAL REVIEW</div>
+        <div class="button download">DOWNLOAD RESULTS (PDF)</div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
+```
